@@ -16,14 +16,12 @@ let imatges = [
     "imatges/penjat_5.png",
     "imatges/penjat_6.png",
 ];  // Rutas de las imágenes para el juego
-let imatgeActual = imatges[0];  // Imagen actual mostrada en el juego
 
 // Elementos HTML
 const jocPenjat = document.getElementById("jocPenjat");
 const abecedari = document.getElementById("abecedari");
 const imatgePenjat = document.getElementById("imatgePenjat");
 const lletresUtilitzades = document.getElementById("lletresUtilitzades");
-const contenidoAlerta = document.getElementById("alertContainer");
 const caixaLletresUtilitzades = document.getElementById("caixaLletresUtilitzades");
 
 // Función para iniciar una nueva partida
@@ -38,11 +36,7 @@ function novaPartida() {
 // Función para manejar el clic en una letra del abecedario
 function clickLletra(lletra) {
     if (lletresUsades.includes(lletra)) {
-        const alerta = crearAlerta("alert-warning", `Ja has utilitzat la lletra ${lletra}`);
-        contenidoAlerta.appendChild(alerta);
-        setTimeout(() => {
-            contenidoAlerta.removeChild(alerta);
-        }, 2000);
+        alert(`Ja has utilitzat la lletra ${lletra}`);
         return;
     }
     lletresUsades.push(lletra);
@@ -62,9 +56,9 @@ function mostrarLletresUtilitzades() {
         boton.textContent = lletra;
         // Estilizar el botón
         if (paraula.includes(lletra)) {
-            boton.classList.add("btn", "btn-success", "m-2");
+            boton.classList.add("btn", "btn-white", "m-2");
         } else {
-            boton.classList.add("btn", "btn-danger", "m-2");
+            boton.classList.add("btn", "btn-dark", "m-2");
         }
         caixaLletresUtilitzades.appendChild(boton);
     }
@@ -127,7 +121,6 @@ function actualitzarParaulaSecreta() {
 // Función para actualizar todas las interfaces del juego
 function actualitzarInterficies() {
     mostrarLletresUtilitzades();
-    mostrarImmatgePenjat();
     actualitzarParaulaSecreta();
     comprovarResultat();
 }
@@ -138,8 +131,7 @@ function reiniciarJoc() {
     intents = 0;
     lletresUsades = [];
     paraulaSecreta = "";
-    imatgeActual = 0;
-    imatgePenjat.src = imatges[imatgeActual];
+    imatgePenjat.src = imatges[intents];
     abecedari.innerHTML = "";
     jocPenjat.innerHTML = "";
     caixaLletresUtilitzades.innerHTML = "";
@@ -163,32 +155,17 @@ function calcularPorcentatge(valor, totalPartides) {
     return (valor / totalPartides) * 100;
 }
 
-// Función para crear una alerta
-function crearAlerta(clase, mensaje) {
-    const alerta = document.createElement("div");
-    alerta.classList.add("alerta", clase);
-    alerta.textContent = mensaje;
-    return alerta;
-}
 
 // Función para comprobar el resultado del juego (ganar o perder)
 function comprovarResultat() {
     if (paraula == paraulaSecreta) {
         partidesGuanyades++;
-        const alerta = crearAlerta("alert-success", `HAS GUANYAT!!!! :)`);
-        contenidoAlerta.appendChild(alerta);
-        setTimeout(() => {
-            contenidoAlerta.removeChild(alerta);
-        }, 5000);
+        alert("HAS GUANYAT!!!! :)");
         reiniciarJoc();
     }
     if (intents === intentsMax) {
         partidesPerdudes++;
-        const alerta = crearAlerta("alert-danger", `Has perdut :( la paraula era ${paraula}. Intenta-ho altre vegada! :)`);
-        contenidoAlerta.appendChild(alerta);
-        setTimeout(() => {
-            contenidoAlerta.removeChild(alerta);
-        }, 5000);
+        alert(`Has perdut :( la paraula era ${paraula}. Intenta-ho altre vegada! :)`);
         reiniciarJoc();
     }
     localStorage.setItem('partidesGuanyades', partidesGuanyades);
@@ -201,10 +178,6 @@ function eliminarEstadistiques() {
     localStorage.removeItem('partidesGuanyades');
     localStorage.removeItem('partidesPerdudes');
     localStorage.clear();
-    const alerta = crearAlerta("alert-success", "S'ha eliminat les Estadístiques");
-    contenidoAlerta.appendChild(alerta);
-    setTimeout(() => {
-        contenidoAlerta.removeChild(alerta);
-    }, 5000);
+    alert("S'ha eliminat les Estadístiques");
 }
    
